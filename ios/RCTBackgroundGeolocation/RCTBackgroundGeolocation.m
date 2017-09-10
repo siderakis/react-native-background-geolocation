@@ -7,16 +7,8 @@
 //
 
 #import "RCTBackgroundGeolocation.h"
-#if __has_include("RCTLog.h")
-#import "RCTLog.h"
-#else
 #import <React/RCTLog.h>
-#endif
-#if __has_include("RCTEventDispatcher.h")
-#import "RCTEventDispatcher.h"
-#else
 #import <React/RCTEventDispatcher.h>
-#endif
 #import "Logging.h"
 
 @implementation RCTBackgroundGeolocation
@@ -35,7 +27,7 @@ RCT_EXPORT_MODULE();
     if (self) {
         [DDLog addLogger:[DDASLLogger sharedInstance] withLevel:DDLogLevelInfo];
         [DDLog addLogger:[DDTTYLogger sharedInstance] withLevel:DDLogLevelDebug];
-        
+
         sqliteLogger = [[FMDBLogger alloc] initWithLogDirectory:[self loggerDirectory]];
         sqliteLogger.saveThreshold     = 1;
         sqliteLogger.saveInterval      = 0;
@@ -60,7 +52,7 @@ RCT_EXPORT_METHOD(configure:(NSDictionary*)configDictionary success:(RCTResponse
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         Config* config = [Config fromDictionary:configDictionary];
         NSError *error = nil;
-        
+
         if ([locationManager configure:config error:&error]) {
             success(@[[NSNull null]]);
         } else {
@@ -122,7 +114,7 @@ RCT_EXPORT_METHOD(showLocationSettings)
 RCT_EXPORT_METHOD(watchLocationMode:(RCTResponseSenderBlock)success failure:(RCTResponseSenderBlock)failure)
 {
     RCTLogInfo(@"RCTBackgroundGeolocation #watchLocationMode");
-    //TODO: implement    
+    //TODO: implement
 }
 
 RCT_EXPORT_METHOD(stopWatchingLocationMode)
@@ -165,7 +157,7 @@ RCT_EXPORT_METHOD(deleteAllLocations:(RCTResponseSenderBlock)success failure:(RC
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : NSTemporaryDirectory();
-    
+
     return [basePath stringByAppendingPathComponent:@"SQLiteLogger"];
 }
 
